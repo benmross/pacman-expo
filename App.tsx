@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Dimensions, PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import { GestureHandlerRootView, PanGestureHandler, PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
 
 const { width, height } = Dimensions.get('window');
 const CELL_SIZE = 20;
@@ -44,7 +44,7 @@ export default function App() {
   const [dots, setDots] = useState(INITIAL_DOTS);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
-  const gameLoopRef = useRef<NodeJS.Timeout>();
+  const gameLoopRef = useRef<NodeJS.Timeout | null>(null);
 
   const isValidMove = (x: number, y: number) => {
     return x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT && MAZE[y][x] === 0;
@@ -133,7 +133,7 @@ export default function App() {
         clearInterval(gameLoopRef.current);
       }
     };
-  }, [pacmanPosition, gameOver]);
+  }, [pacmanPosition, gameOver, ghosts]);
 
   const resetGame = () => {
     setPacmanPosition({ x: 1, y: 1 });
